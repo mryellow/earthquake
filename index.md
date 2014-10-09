@@ -1,5 +1,5 @@
 ---
-title: Earthquakes in Chile since 1900
+title: Earthquakes in Asia Pacific since 2009
 layout: mapvis
 ---
 
