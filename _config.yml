@@ -5,4 +5,4 @@ lsi: false
 markdown: rdiscount
 highlighter: pigments
 permalink: pretty
-baseurl: "http://pnavarrc.github.io/earthquake"
+baseurl: "http://mryellow.github.io/earthquake"

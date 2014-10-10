@@ -1,10 +1,6 @@
 # Earthquakes in Asia Pacific since 2009
 
-<a href="http://mryellow.github.io/earthquake/">
-<img src="https://github.com/mryellow/earthquake/raw/develop/img/screenshot.png" alt="">
-</a>
-
-This page allows to visualize the most important seismic events since 1900. The measurement process has improved over time, augmenting the quantity and quality of the earthquake records. The radius and the color of the circles maps to the earthquake magnitude. The interactive visualization:
+The radius and the color of the circles maps to the earthquake magnitude. The interactive visualization:
 
 [Earthquakes in Asia Pacific since 2009](http://mryellow.github.io/earthquake/)
 
@@ -16,5 +12,4 @@ The mapping libraries and tiles are provided by [MapBox](http://mapbox.com/). Ma
 
 ### Earthquake Data
 
-The earthquake data was retrieved from the [ANSS Composite Catalog](http://quake.geo.berkeley.edu/cnss/) and joined with the [Centennial Catalog](http://earthquake.usgs.gov/research/data/centennial.php) from the [USGS](http://www.usgs.gov/). Thanks to the USGS, to the  Advanced National Seismic System (ANSS) for providing the catalog and to the [Northern California Earthquake Data Center (NCEDC)](http://quake.geo.berkeley.edu/) and to the organizations that contributed the data to the NCEDC.
-
+The earthquake data was retrieved from the [USGS](http://www.usgs.gov/).

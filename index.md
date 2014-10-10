@@ -1,5 +1,5 @@
 ---
-title: Earthquakes in Chile since 1900
+title: Earthquakes in Asia Pacific since 2009
 layout: mapvis
 ---
 
@@ -30,13 +30,13 @@ layout: mapvis
         fontsize: 50
       },
       rectYear: {
-        width:  400,
-        height: 100,
-        margin: 40
+        width:  280,
+        height: 70,
+        margin: 10
       },
       txtYear: {
         margin: {
-          top: 80,
+          top: 50,
           left: 30
         },
         fontsize: 50
@@ -130,10 +130,15 @@ layout: mapvis
 
         visSvg.attr('width',  mapDim.x)
               .attr('height', mapDim.y);
-
+/*
         var infoPos = {
           x: mapDim.x - visconf.rectYear.width - visconf.rectYear.margin,
           y: mapDim.y - visconf.rectYear.height - visconf.rectYear.margin
+        };
+*/
+        var infoPos = {
+          x: mapDim.x - visconf.rectYear.width - visconf.rectYear.margin,
+          y: 0 + visconf.rectYear.margin
         };
 
         grpYear.attr("transform", "translate(" + infoPos.x + "," + infoPos.y + ")");
@@ -145,6 +150,7 @@ layout: mapvis
             .attr('height', visconf.rectYear.height);
 
         txtYear.attr('id', 'txtyear')
+          .style('font-size', visconf.txtYear.fontsize+'px')
           .attr('x', visconf.txtYear.margin.left)
           .attr('y', visconf.txtYear.margin.top)
           .text('Jan/2009');
