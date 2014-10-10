@@ -30,7 +30,7 @@ layout: mapvis
         fontsize: 50
       },
       rectYear: {
-        width:  400,
+        width:  350,
         height: 100,
         margin: 40
       },
@@ -39,7 +39,7 @@ layout: mapvis
           top: 80,
           left: 30
         },
-        fontsize: 50
+        fontsize: 40
       },
 
       rectTip: {
