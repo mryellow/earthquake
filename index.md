@@ -76,22 +76,6 @@ layout: mapvis
       grpPoints = visSvg.append('g'),
       grpTip = visSvg.append('g');
 
-/*
-  var tip = d3.tip()
-      .attr('class', 'd3-tip')
-      .offset([-10, 0])
-      .html(function(d) {
-        return "<strong>Mag:</strong> <span style='color:red'>" + d.mag + "</span>";
-      });
-
-  var div = d3.select("body")
-    .append("div")  // declare the tooltip div 
-    .attr("class", "tooltip")              // apply the 'tooltip' class
-    .style("opacity", 0); 
-  
-
-*/
-
   // D3 Visualization Layer
   function D3Layer() {
 
@@ -107,10 +91,9 @@ layout: mapvis
         eqDuration,
         eqColor;
 
+    // Remember state for resume button
     var startDay = 0;
     var lastMax = 0;
-
-    
 
     layer.parent = visDiv.node();
 
@@ -131,11 +114,14 @@ layout: mapvis
         visSvg.attr('width',  mapDim.x)
               .attr('height', mapDim.y);
 /*
+        // Bottom right
         var infoPos = {
           x: mapDim.x - visconf.rectYear.width - visconf.rectYear.margin,
           y: mapDim.y - visconf.rectYear.height - visconf.rectYear.margin
         };
 */
+
+        // Top right
         var infoPos = {
           x: mapDim.x - visconf.rectYear.width - visconf.rectYear.margin,
           y: 0 + visconf.rectYear.margin
@@ -154,20 +140,7 @@ layout: mapvis
           .attr('x', visconf.txtYear.margin.left)
           .attr('y', visconf.txtYear.margin.top)
           .text('Jan/2009');
-/*
 
-          tipBox.attr('id', 'tipBox')
-            .attr('x', 0)
-            .attr('y', 0)
-
-            .attr('width',  visconf.tipBox.width)
-            .attr('height', visconf.tipBox.height);
-
-          tipInfo.attr('id', 'tipInfo')
-            .attr('x', visconf.tipInfo.margin.left)
-            .attr('y', visconf.tipInfo.margin.top)
-            .text('aaaaa');
-*/
         firstDraw = false;
       }
 
@@ -197,88 +170,30 @@ layout: mapvis
 
     startDay = lastMax + 1;
     lastMax = 0;
-//console.log(feature);
+
     feature.filter(function(d, i) {
+        // Record day of first record for offset after resume
         if (d.properties.day < firstDay || firstDay === 0) {
           firstDay = d.properties.day;
         }
-        if ((d.properties.day <= lastMax || lastMax === 0) && d.properties.day >= startDay && d.properties.mag >= 7) {
-          //console.log(d);
-          lastMax = d.properties.day;
+        if (d.properties.day <= lastMax || lastMax === 0) {
+          if (d.properties.day >= startDay) {
+            // Record day of mag 7+ for resume
+            if ( && d.properties.mag >= 7) lastMax = d.properties.day;
+            return i;
+          }
         }
-        if ((d.properties.day <= lastMax || lastMax === 0) && d.properties.day >= startDay)  return i;
       })
       .transition()
       .delay(function(item) {
         if (startDay === 1) startDay = firstDay;
-        /*
-        console.log('firstDay:'+firstDay);
-        console.log('startDay:'+startDay);
-        console.log((item.properties.day-(startDay-firstDay)));
-        */
-        return eqDelay(item.properties.day-(startDay-firstDay));
+        return eqDelay(item.properties.day-(startDay-firstDay)); // Re-postition delay domain from new resumed offset
       })
       .duration(function(item) {
         return eqDuration(item.properties.mag);
       })
       .each('start', function() {
         var mag = this.__data__.properties.mag;
-        if (mag >= 7) {
-          //console.log('start:'+mag);
-
-//console.log(this);
-/*
-var segments = this.pathSegList;
-var pointX = segments.getItem(0).x;
-var pointY = segments.getItem(0).y;
-
-var grpTip = visSvg.append('g'),
-  tipBox = grpTip.append('rect'),
-  tipInfo = grpTip.append('text');
-
-tipBox.attr('id', 'tipBox_'+this.__data__.properties.code)
-  .attr('class', 'tipBox')
-  .attr('x', pointX)
-  .attr('y', pointY)
-  .attr('width',  visconf.tipBox.width)
-  .attr('height', visconf.tipBox.height);
-
-tipInfo.attr('id', 'tipInfo_'+this.__data__.properties.code)
-  .attr('class', 'tipInfo')
-  .attr('x', pointX+visconf.tipInfo.margin.left)
-  .attr('y', pointY+visconf.tipInfo.margin.top)
-  .text('Mag:'+this.__data__.properties.mag);
-*/
-
-//console.log(this.getBBox());
-/*
-          div.transition()
-            .duration(500)  
-            .style("opacity", 0);
-          div.transition()
-            .duration(200)  
-            .style("opacity", .9);  
-          div.html(
-            '<a href= "http://google.com">' + // The first <a> tag
-            mag +
-            "</a>")  
-            .style("left", (d3.event.pageX) + "px")      
-            .style("top", (d3.event.pageY - 28) + "px");
-*/
-          //tip.show(this.__data__.properties);
-//          d3.select(this)
-//            .append('tooltip')
-//            .html('tooltip');
-/*
-          d3.select(this)
-            .on('mouseover', tip.show)
-            .on('mouseout', tip.hide)
-*/
-          //feature.transition().duration( 0 ); // pause
-
-          // Remove tweens
-          //this.remove();
-        }
 
         d3.select(this)
           .attr('fill', function() {
@@ -293,16 +208,11 @@ tipInfo.attr('id', 'tipInfo_'+this.__data__.properties.code)
 
         var mag = this.__data__.properties.mag;
         if (mag >= 7) {
-          // show info box?
-          //console.log('end:'+mag);
 
-//console.log(this.__data__.properties);
-
-// Insert numbered circle
+// Insert circle points
 var segments = this.pathSegList;
 var pointX = segments.getItem(0).x;
 var pointY = segments.getItem(0).y;
-
 
 var cirPoint = grpPoints.append('circle'),
   txtPoint = grpPoints.append('text'),
@@ -320,13 +230,9 @@ txtTip.attr('id', 'txtTip_'+this.__data__.properties.code)
   .attr('class', 'txtTip')
   .attr('x', pointX+visconf.rectTip.margin.left+visconf.txtTip.margin.left)
   .attr('y', pointY+visconf.rectTip.margin.top+visconf.txtTip.margin.top);
-  /*
-  txtTip.append('tspan')
-    .attr('dy', 1)
-    .text('Title:'+this.__data__.properties.title);
-  */
 
 
+  // Fill tooltip with point data
   var datetime = new Date(this.__data__.properties.time);
 
   txtTip.append('tspan')
@@ -348,10 +254,6 @@ txtTip.attr('id', 'txtTip_'+this.__data__.properties.code)
       .attr('dy', 22)
       .text('Depth: '+this.__data__.properties.dmin+'km');
   }
-
-
-
-
 
 cirPoint.attr('id', 'cirPoint_'+this.__data__.properties.code)
   .style("fill", document.defaultView.getComputedStyle(this, null).getPropertyValue("fill"))
@@ -403,7 +305,7 @@ cirPoint.attr('id', 'cirPoint_'+this.__data__.properties.code)
       });
 
 
-
+          // Re-enable button now animation has stopped.
           btnPlay = d3.select('#btnPlay').attr('disabled', null);
 
 
