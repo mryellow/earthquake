@@ -30,8 +30,8 @@ layout: mapvis
         fontsize: 50
       },
       rectYear: {
-        width:  350,
-        height: 100,
+        width:  400,
+        height: 70,
         margin: 40
       },
       txtYear: {
