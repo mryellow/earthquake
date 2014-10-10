@@ -32,6 +32,26 @@ h1.heading {
 }
 
 #txtyear {
-	fill: #343434;
+	fill: #ffffff;
+	font-size: 80px;
+}
+
+.rectTip {
+	fill: #1a1a1a;
+	fill-opacity: 0.9;
+}
+
+.txtTip {
+	fill: #ffffff;
+	font-size: 20px;
+}
+
+.cirPoint {
+	fill-opacity: 0.9;
+	stroke: #ffffff;
+}
+
+.txtPoint {
+	fill: #ffffff;
 	font-size: 80px;
 }
