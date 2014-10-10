@@ -137,8 +137,8 @@ layout: mapvis
         };
 */
         var infoPos = {
-          x: mapDim.x + visconf.rectYear.margin,
-          y: mapDim.y - visconf.rectYear.height - visconf.rectYear.margin
+          x: mapDim.x - visconf.rectYear.width - visconf.rectYear.margin,
+          y: mapDim.y + visconf.rectYear.margin
         };
 
         grpYear.attr("transform", "translate(" + infoPos.x + "," + infoPos.y + ")");
