@@ -252,7 +252,7 @@ txtTip.attr('id', 'txtTip_'+this.__data__.properties.code)
     txtTip.append('tspan')
       .attr('x', txtTip.attr('x'))
       .attr('dy', 22)
-      .text('Depth: '+this.__data__.properties.dmin+'km');
+      .text('Depth: '+Math.round(this.__data__.properties.dmin,2)+'km');
   }
 
 cirPoint.attr('id', 'cirPoint_'+this.__data__.properties.code)
