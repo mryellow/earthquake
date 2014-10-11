@@ -73,8 +73,8 @@ layout: mapvis
       grpYear = visSvg.append('g'),
       rectYear = grpYear.append('rect'),
       txtYear = grpYear.append('text'),
-      grpPoints = visSvg.append('g'),
-      grpTip = visSvg.append('g');
+      //grpPoints = visSvg.append('g'),
+      //grpTip = visSvg.append('g');
 
   // D3 Visualization Layer
   function D3Layer() {
