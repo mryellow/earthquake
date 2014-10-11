@@ -193,6 +193,7 @@ html_item += '</li>';
 
 $('#earthquake_list').append(html_item);
 
+/*
 // Insert circle points
 var segments = this.pathSegList;
 var pointX = segments.getItem(0).x;
@@ -287,7 +288,7 @@ cirPoint.attr('id', 'cirPoint_'+this.__data__.properties.code)
         .style("opacity", 0);
 
       });
-
+*/
 
 
         }
