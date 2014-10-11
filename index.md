@@ -73,6 +73,8 @@ layout: mapvis
       grpYear = visSvg.append('g'),
       rectYear = grpYear.append('rect'),
       txtYear = grpYear.append('text'),
+      grpPoints = visSvg.append('g'),
+      grpTip = visSvg.append('g');
 
   // D3 Visualization Layer
   function D3Layer() {
@@ -166,6 +168,7 @@ layout: mapvis
       })
       .each('start', function() {
         var mag = this.__data__.properties.mag;
+        console.log('start:'+mag);
 
         d3.select(this)
           .attr('fill', function() {
@@ -176,13 +179,11 @@ layout: mapvis
         txtYear.text(this.__data__.properties.month+'/'+this.__data__.properties.year);
       })
       .each('end', function() {
-
+        console.log('end:'+mag);
         d3.select(this).attr("fill-opacity", 0.0);
 
         var mag = this.__data__.properties.mag;
         if (mag >= 7) {
-          console.log('end:'+mag);
-
 /*
 var html_item = '<li>' + datetime.toLocaleTimeString()+' '+datetime.toLocaleDateString() +
   '<br/>' + this.__data__.properties.place +
@@ -193,6 +194,102 @@ if (this.__data__.properties.dmin !== null) {
 html_item += '</li>';
 
 $('#earthquake_list').append(html_item);
+*/
+/*
+// Insert circle points
+var segments = this.pathSegList;
+var pointX = segments.getItem(0).x;
+var pointY = segments.getItem(0).y;
+
+var cirPoint = grpPoints.append('circle'),
+  txtPoint = grpPoints.append('text'),
+  rectTip = grpTip.append('rect'),
+  txtTip = grpTip.append('text');
+
+rectTip.attr('id', 'rectTip_'+this.__data__.properties.code)
+  .attr('class', 'rectTip')
+  .attr('x', pointX+visconf.rectTip.margin.left)
+  .attr('y', pointY+visconf.rectTip.margin.top)
+  .attr('width',  visconf.rectTip.width)
+  .attr('height', visconf.rectTip.height);
+
+txtTip.attr('id', 'txtTip_'+this.__data__.properties.code)
+  .attr('class', 'txtTip')
+  .attr('x', pointX+visconf.rectTip.margin.left+visconf.txtTip.margin.left)
+  .attr('y', pointY+visconf.rectTip.margin.top+visconf.txtTip.margin.top);
+
+
+  // Fill tooltip with point data
+  var datetime = new Date(this.__data__.properties.time);
+
+  txtTip.append('tspan')
+    .text(datetime.toLocaleTimeString()+' '+datetime.toLocaleDateString());
+
+  txtTip.append('tspan')
+    .attr('x', txtTip.attr('x'))
+    .attr('dy', 22)
+    .text(this.__data__.properties.place);
+
+  txtTip.append('tspan')
+    .attr('x', txtTip.attr('x'))
+    .attr('dy', 22)
+    .text('Magnitude: '+this.__data__.properties.mag);
+
+  if (this.__data__.properties.dmin !== null) {
+    txtTip.append('tspan')
+      .attr('x', txtTip.attr('x'))
+      .attr('dy', 22)
+      .text('Depth: '+Math.round(this.__data__.properties.dmin,2)+'km');
+  }
+
+cirPoint.attr('id', 'cirPoint_'+this.__data__.properties.code)
+  .style("fill", document.defaultView.getComputedStyle(this, null).getPropertyValue("fill"))
+  .attr('class', 'cirPoint')
+  .attr('cx', pointX)
+  .attr('cy', pointY)
+  .attr('r', visconf.cirPoint.radius)
+    .on("mouseover", function() { 
+       d3.select(this)
+        .style("stroke", "#fff")
+        .transition()
+        .duration(1000)
+        .style("stroke", "#B23600");
+
+      rectTip
+        .style("opacity", 0)
+        .transition()
+        .duration(1000)
+        .style("opacity", 1);
+
+      txtTip
+        .style("opacity", 0)
+        .transition()
+        .duration(1000)
+        .style("opacity", 1);
+
+    })
+    .on("mouseout", function() { 
+       d3.select(this)
+         // if you remove this transition, 
+         // the "mouseover" transition takes precedence 
+         // and leaves the border "stuck" at red
+         .transition()     
+         .duration(500)
+        .style("stroke", "#fff");
+
+      rectTip
+        .style("opacity", 1)
+        .transition()
+        .duration(1000)
+        .style("opacity", 0);
+
+      txtTip
+        .style("opacity", 1)
+        .transition()
+        .duration(1000)
+        .style("opacity", 0);
+
+      });
 */
 
 
@@ -235,21 +332,22 @@ $('#earthquake_list').append(html_item);
         .range(visconf.colorExtent);
 
       return layer;
-  };
+    };
 
-  layer.extent = function() {
+    layer.extent = function() {
       return new MM.Extent(
         new MM.Location(bounds[0][1], bounds[0][0]),
         new MM.Location(bounds[1][1], bounds[1][0]));
     };
 
     return layer;
+
   };
 
   function epochDay(datetime) {
     var MS_DAY = 24 * 60 * 60 * 1000,
-      ms_epoch = Date.parse(datetime);
-    return (ms_epoch - ms_epoch % MS_DAY) / MS_DAY;
+          ms_epoch = Date.parse(datetime);
+      return (ms_epoch - ms_epoch % MS_DAY) / MS_DAY;
   };
 
   // Load the data
@@ -257,14 +355,15 @@ $('#earthquake_list').append(html_item);
 
     // Add additional data to the eartquake events
     var earthquakePoints = earthquakeData.features,
-      firstDate = new Date(earthquakePoints[0].properties.time),
-      dayOffset = Math.abs(epochDay(firstDate));
+        firstDate = new Date(earthquakePoints[0].properties.time),
+        dayOffset = Math.abs(epochDay(firstDate));
 
     earthquakePoints.forEach(function(item) {
       var datetime = new Date(item.properties.time);
       item.properties['day'] = epochDay(datetime) + dayOffset;
       item.properties['month'] = month[datetime.getMonth()];
       item.properties['year'] = datetime.getFullYear();
+
     });
 
     // Load and draw the map
