@@ -55,3 +55,13 @@ h1.heading {
 	fill: #ffffff;
 	font-size: 80px;
 }
+
+li.earthquake_item {
+	border-style: solid;
+	border-width: 2px;
+	border-color: #000000;
+}
+
+li.active {
+	border-color: #ff3300;
+}
