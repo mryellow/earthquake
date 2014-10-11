@@ -73,8 +73,6 @@ layout: mapvis
       grpYear = visSvg.append('g'),
       rectYear = grpYear.append('rect'),
       txtYear = grpYear.append('text'),
-      //grpPoints = visSvg.append('g'),
-      //grpTip = visSvg.append('g');
 
   // D3 Visualization Layer
   function D3Layer() {
@@ -237,31 +235,30 @@ $('#earthquake_list').append(html_item);
         .range(visconf.colorExtent);
 
       return layer;
-    };
+  };
 
-    layer.extent = function() {
+  layer.extent = function() {
       return new MM.Extent(
         new MM.Location(bounds[0][1], bounds[0][0]),
         new MM.Location(bounds[1][1], bounds[1][0]));
     };
 
     return layer;
-
   };
 
   function epochDay(datetime) {
     var MS_DAY = 24 * 60 * 60 * 1000,
-          ms_epoch = Date.parse(datetime);
-      return (ms_epoch - ms_epoch % MS_DAY) / MS_DAY;
+      ms_epoch = Date.parse(datetime);
+    return (ms_epoch - ms_epoch % MS_DAY) / MS_DAY;
   };
 
   // Load the data
   d3.json('data/usgs_3plus_dsc.json', function(earthquakeData) {
-/*
+
     // Add additional data to the eartquake events
     var earthquakePoints = earthquakeData.features,
-        firstDate = new Date(earthquakePoints[0].properties.time),
-        dayOffset = Math.abs(epochDay(firstDate));
+      firstDate = new Date(earthquakePoints[0].properties.time),
+      dayOffset = Math.abs(epochDay(firstDate));
 
     earthquakePoints.forEach(function(item) {
       var datetime = new Date(item.properties.time);
@@ -269,7 +266,7 @@ $('#earthquake_list').append(html_item);
       item.properties['month'] = month[datetime.getMonth()];
       item.properties['year'] = datetime.getFullYear();
     });
-*/
+
     // Load and draw the map
     mapbox.load(mapconf.mapid, function(mbmap) {
       map = mapbox.map("map", mbmap.layer, null, []);
