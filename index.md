@@ -257,7 +257,7 @@ $('#earthquake_list').append(html_item);
 
   // Load the data
   d3.json('data/usgs_3plus_dsc.json', function(earthquakeData) {
-
+/*
     // Add additional data to the eartquake events
     var earthquakePoints = earthquakeData.features,
         firstDate = new Date(earthquakePoints[0].properties.time),
@@ -268,9 +268,8 @@ $('#earthquake_list').append(html_item);
       item.properties['day'] = epochDay(datetime) + dayOffset;
       item.properties['month'] = month[datetime.getMonth()];
       item.properties['year'] = datetime.getFullYear();
-
     });
-
+*/
     // Load and draw the map
     mapbox.load(mapconf.mapid, function(mbmap) {
       map = mapbox.map("map", mbmap.layer, null, []);
