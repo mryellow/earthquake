@@ -17,19 +17,35 @@
 
 	<div class="row-fluid">
 
-	<form class="inline-form">
-	<button id="btnPlay" class="btn btn-info" type="button">Play</button>
-	</form>
+	
 
 		<div id="sidebar" class="span4">
-			<ul id="earthquake_list">
-				<li>earthquake list</li>	
-			</ul>
+		  	<div class="introduction">
+		  		<h1 class="heading">{{ page.title }}</h1>
+		  		<p class="intro"><strong>This page allows to visualize the most important seismic events in Chile since 1900. The
+		  			measurement process has improved over time, augmenting the quantity and quality
+		  			of earthquake records. The radius and the color of the circles are function of the
+		  			earthquake magnitude.</strong></p>
+
+		  		<form class="inline-form">
+		  			<button id="btnPlay" class="btn btn-info" type="button">Play</button>
+		  		</form>
+		  	</div>
+
+			<div class="panel">
+				<ul id="earthquake_list">
+					<li>earthquake list</li>	
+				</ul>
+
+				<form class="inline-form">
+				<button id="btnPlay" class="btn btn-info" type="button">Play</button>
+				</form>
+			</div>
 		</div>
 
-	  <!-- Map -->
-	  <div id="map" class="span8"></div>
-	  <div id="d3l"></div>
+		<!-- Map -->
+		<div id="map" class="span8"></div>
+		<div id="d3l"></div>
 
 	</div>
 

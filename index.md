@@ -182,7 +182,7 @@ layout: mapvis
 
         var mag = this.__data__.properties.mag;
         if (mag >= 7) {
-
+/*
 var html_item = '<li>' + datetime.toLocaleTimeString()+' '+datetime.toLocaleDateString() +
   '<br/>' + this.__data__.properties.place +
   '<br/>' + 'Magnitude: '+this.__data__.properties.mag;
@@ -192,7 +192,7 @@ if (this.__data__.properties.dmin !== null) {
 html_item += '</li>';
 
 $('#earthquake_list').append(html_item);
-
+*/
 /*
 // Insert circle points
 var segments = this.pathSegList;
