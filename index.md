@@ -168,7 +168,6 @@ layout: mapvis
       })
       .each('start', function() {
         var mag = this.__data__.properties.mag;
-        console.log('start:'+mag);
 
         d3.select(this)
           .attr('fill', function() {
@@ -183,8 +182,8 @@ layout: mapvis
         d3.select(this).attr("fill-opacity", 0.0);
 
         var mag = this.__data__.properties.mag;
-        console.log('end:'+mag);
         if (mag >= 7) {
+          console.log('end:'+mag);
 
 /*
 var html_item = '<li>' + datetime.toLocaleTimeString()+' '+datetime.toLocaleDateString() +
