@@ -176,12 +176,10 @@ layout: mapvis
         if (d.properties.day < firstDay || firstDay === 0) {
           firstDay = d.properties.day;
         }
-        if (d.properties.day <= lastMax || lastMax === 0) {
-          if (d.properties.day >= startDay) {
-            // Record day of mag 7+ for resume
-            if (d.properties.mag >= 7) lastMax = d.properties.day;
-            return i;
-          }
+        if (d.properties.day >= startDay && (d.properties.day <= lastMax || lastMax === 0)) {
+          // Record day of mag 7+ for resume
+          if (d.properties.mag >= 7) lastMax = d.properties.day;
+          return i;
         }
       })
       .transition()
