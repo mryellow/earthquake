@@ -91,10 +91,6 @@ layout: mapvis
         eqDuration,
         eqColor;
 
-    // Remember state for resume button
-    var startDay = 0;
-    var lastMax = 0;
-
     layer.parent = visDiv.node();
 
     layer.project = function(coord) {
@@ -148,7 +144,8 @@ layout: mapvis
 
   layer.drawPoints = function() {
 
-    btnPlay = d3.select('#btnPlay').text('Resume').attr('disabled', 'disabled');
+    //btnPlay = d3.select('#btnPlay').text('Resume').attr('disabled', 'disabled');
+    //btnPlay = d3.select('#btnPlay').attr('disabled', 'disabled');
 
     path = d3.geo.path()
       .projection(layer.project)
@@ -162,30 +159,9 @@ layout: mapvis
         return eqRadius(item.properties.mag);
       });
 
-    var firstDay = 0;
-
-    // Clear points layer
-    grpPoints.selectAll("*").remove();
-    grpTip.selectAll("*").remove();
-
-    startDay = lastMax + 1;
-    lastMax = 0;
-
-    feature.filter(function(d, i) {
-        // Record day of first record for offset after resume
-        if (d.properties.day < firstDay || firstDay === 0) {
-          firstDay = d.properties.day;
-        }
-        if (d.properties.day >= startDay && (d.properties.day <= lastMax || lastMax === 0)) {
-          // Record day of mag 7+ for resume
-          if (d.properties.mag >= 7) lastMax = d.properties.day;
-          return i;
-        }
-      })
-      .transition()
+    feature.transition()
       .delay(function(item) {
-        if (startDay === 1) startDay = firstDay;
-        return eqDelay(item.properties.day-(startDay-firstDay)); // Re-postition delay domain from new resumed offset
+        return eqDelay(item.properties.day);
       })
       .duration(function(item) {
         return eqDuration(item.properties.mag);
@@ -206,6 +182,16 @@ layout: mapvis
 
         var mag = this.__data__.properties.mag;
         if (mag >= 7) {
+
+var html_item = '<li>' + datetime.toLocaleTimeString()+' '+datetime.toLocaleDateString() +
+  '<br/>' + this.__data__.properties.place +
+  '<br/>' + 'Magnitude: '+this.__data__.properties.mag;
+if (this.__data__.properties.dmin !== null) {
+  html_item += '<br/>' + 'Depth: '+Math.round(this.__data__.properties.dmin,2)+'km'
+}
+'</li>'
+
+$('#earthquake_list').append(html_item);
 
 // Insert circle points
 var segments = this.pathSegList;
@@ -303,9 +289,6 @@ cirPoint.attr('id', 'cirPoint_'+this.__data__.properties.code)
       });
 
 
-          // Re-enable button now animation has stopped.
-          btnPlay = d3.select('#btnPlay').attr('disabled', null);
-
 
         }
 
@@ -377,8 +360,6 @@ cirPoint.attr('id', 'cirPoint_'+this.__data__.properties.code)
       item.properties['day'] = epochDay(datetime) + dayOffset;
       item.properties['month'] = month[datetime.getMonth()];
       item.properties['year'] = datetime.getFullYear();
-
-      //console.log(item.properties['day']+'/'+item.properties['year']);
 
     });
 
