@@ -2,6 +2,7 @@
 	padding-left:  10px;
 	padding-right: 10px;
 	background-color: #ffffff;
+	height: 660px;
 }
 
 h1.heading {
@@ -54,4 +55,14 @@ h1.heading {
 .txtPoint {
 	fill: #ffffff;
 	font-size: 80px;
+}
+
+#earthquake_container {
+	height:100%;
+}
+
+#earthquake_list {
+	height:100%;
+	overflow-x: hidden;
+    overflow-y: auto;
 }

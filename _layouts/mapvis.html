@@ -7,28 +7,46 @@
     <meta name="author" content="Mr-Yellow">
 
     <!-- Le styles -->
-    <link href="{{ site.baseurl }}/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ site.baseurl }}/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href='http://api.tiles.mapbox.com/mapbox.js/v0.6.7/mapbox.css' rel='stylesheet' />
-    <link href="{{ site.baseurl }}/css/mapvis.css" rel="stylesheet">
+    <link href="css/mapvis.css" rel="stylesheet">
 
   </head>
   <body>
 
-	<div class="row-fluid">
+	<div class="container-fluid">
+	    <div class="row">
+	  		<div id="sidebar" class="col-md-4">
+	  		  	<div class="introduction">
+	  		  		<h1 class="heading">Earthquakes in Asia Pacific since 2009</h1>
+	  		  		<p class="intro"><strong>This page allows to visualize seismic events in the Asia Pacific since 2009. 
+	  		  		The radius and the color of the circles are function of the earthquake magnitude.</strong></p>
 
-	<form class="inline-form">
-	<button id="btnPlay" class="btn btn-info" type="button">Play</button>
-	</form>
+	  		  		<form class="inline-form">
+	  		  			<button id="btnPlay" class="btn btn-info" type="button">Play</button>
+	  		  		</form>
+	  		  	</div>
 
-	  <!-- Map -->
-	  <div id="map" class="span8"></div>
-	  <div id="d3l"></div>
+	  			<div class="panel" id="earthquake_container">
+	  				<ul class="list-group" id="earthquake_list">
+	          </ul>
+	  			</div>
+	  		</div>
+
+	  		<!-- Map -->
+	  		<div id="map" class="col-md-8"></div>
+	    </div>
+
+	    <div class="row">
+			  <div id="d3l" class="col-md-12"></div>
+	    </div>
 
 	</div>
 
-    <script src='http://api.tiles.mapbox.com/mapbox.js/v0.6.6/mapbox.js'></script>
+
+
+	<script src='http://api.tiles.mapbox.com/mapbox.js/v0.6.6/mapbox.js'></script>
 	{{ content }}
-	<script src="{{ site.baseurl }}/js/jquery.min.js"></script>
-	<script src="{{ site.baseurl }}/js/bootstrap-tab.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 </body>

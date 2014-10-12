@@ -91,7 +91,6 @@ layout: mapvis
         eqDuration,
         eqColor;
 
-    // Remember state for resume button
     var startDay = 0;
     var lastMax = 0;
 
@@ -150,6 +149,7 @@ layout: mapvis
 
     btnPlay = d3.select('#btnPlay').text('Resume').attr('disabled', 'disabled');
 
+console.log('start path');
     path = d3.geo.path()
       .projection(layer.project)
       .pointRadius(0);
@@ -162,32 +162,36 @@ layout: mapvis
         return eqRadius(item.properties.mag);
       });
 
+console.log('end path');
+    // Very first day
     var firstDay = 0;
 
     // Clear points layer
     grpPoints.selectAll("*").remove();
     grpTip.selectAll("*").remove();
 
+    // Offset for resume filter
     startDay = lastMax + 1;
+
+    // Reset last maximum magnitude
     lastMax = 0;
 
+console.log('start transition');
+
     feature.filter(function(d, i) {
-        // Record day of first record for offset after resume
         if (d.properties.day < firstDay || firstDay === 0) {
           firstDay = d.properties.day;
         }
-        if (d.properties.day <= lastMax || lastMax === 0) {
-          if (d.properties.day >= startDay) {
-            // Record day of mag 7+ for resume
-            if (d.properties.mag >= 7) lastMax = d.properties.day;
-            return i;
-          }
+        if ((d.properties.day <= lastMax || lastMax === 0) && d.properties.day >= startDay && d.properties.mag >= 7) {
+          lastMax = d.properties.day;
         }
+        if ((d.properties.day <= lastMax || lastMax === 0) && d.properties.day >= startDay)  return i;
       })
       .transition()
       .delay(function(item) {
+        // Reposition to begining based on day of last resume.
         if (startDay === 1) startDay = firstDay;
-        return eqDelay(item.properties.day-(startDay-firstDay)); // Re-postition delay domain from new resumed offset
+        return eqDelay(item.properties.day-(startDay-firstDay));
       })
       .duration(function(item) {
         return eqDuration(item.properties.mag);
@@ -204,58 +208,33 @@ layout: mapvis
         txtYear.text(this.__data__.properties.month+'/'+this.__data__.properties.year);
       })
       .each('end', function() {
+
         d3.select(this).attr("fill-opacity", 0.0);
 
         var mag = this.__data__.properties.mag;
         if (mag >= 7) {
+          console.log('end:'+mag);
+var code = this.__data__.properties.code;
+var datetime = new Date(this.__data__.properties.time);
+var html_item = '<li class="list-group-item earthquake_item" id="earthquake_'+code+'">' + datetime.toLocaleTimeString()+' '+datetime.toLocaleDateString() +
+  '<br/>' + this.__data__.properties.place +
+  '<br/>' + 'Magnitude: '+this.__data__.properties.mag;
+if (this.__data__.properties.dmin !== null) {
+  html_item += '<br/>' + 'Depth: '+Math.round(this.__data__.properties.dmin,2)+'km';
+}
+html_item += '</li>';
 
-// Insert circle points
+$('#earthquake_list').prepend(html_item);
+
+// Insert numbered circle
 var segments = this.pathSegList;
 var pointX = segments.getItem(0).x;
 var pointY = segments.getItem(0).y;
 
-var cirPoint = grpPoints.append('circle'),
-  txtPoint = grpPoints.append('text'),
-  rectTip = grpTip.append('rect'),
-  txtTip = grpTip.append('text');
+var cirPoint = grpPoints.append('circle');
+//  txtPoint = grpPoints.append('text'),
 
-rectTip.attr('id', 'rectTip_'+this.__data__.properties.code)
-  .attr('class', 'rectTip')
-  .attr('x', pointX+visconf.rectTip.margin.left)
-  .attr('y', pointY+visconf.rectTip.margin.top)
-  .attr('width',  visconf.rectTip.width)
-  .attr('height', visconf.rectTip.height);
-
-txtTip.attr('id', 'txtTip_'+this.__data__.properties.code)
-  .attr('class', 'txtTip')
-  .attr('x', pointX+visconf.rectTip.margin.left+visconf.txtTip.margin.left)
-  .attr('y', pointY+visconf.rectTip.margin.top+visconf.txtTip.margin.top);
-
-
-  // Fill tooltip with point data
-  var datetime = new Date(this.__data__.properties.time);
-
-  txtTip.append('tspan')
-    .text(datetime.toLocaleTimeString()+' '+datetime.toLocaleDateString());
-
-  txtTip.append('tspan')
-    .attr('x', txtTip.attr('x'))
-    .attr('dy', 22)
-    .text(this.__data__.properties.place);
-
-  txtTip.append('tspan')
-    .attr('x', txtTip.attr('x'))
-    .attr('dy', 22)
-    .text('Magnitude: '+this.__data__.properties.mag);
-
-  if (this.__data__.properties.dmin !== null) {
-    txtTip.append('tspan')
-      .attr('x', txtTip.attr('x'))
-      .attr('dy', 22)
-      .text('Depth: '+this.__data__.properties.dmin+'km');
-  }
-
-cirPoint.attr('id', 'cirPoint_'+this.__data__.properties.code)
+cirPoint.attr('id', 'cirPoint_'+code)
   .style("fill", document.defaultView.getComputedStyle(this, null).getPropertyValue("fill"))
   .attr('class', 'cirPoint')
   .attr('cx', pointX)
@@ -267,18 +246,10 @@ cirPoint.attr('id', 'cirPoint_'+this.__data__.properties.code)
         .transition()
         .duration(1000)
         .style("stroke", "#B23600");
+      
 
-      rectTip
-        .style("opacity", 0)
-        .transition()
-        .duration(1000)
-        .style("opacity", 1);
-
-      txtTip
-        .style("opacity", 0)
-        .transition()
-        .duration(1000)
-        .style("opacity", 1);
+      // Highlight matching LI
+      $('#earthquake_'+code).addClass('active');
 
     })
     .on("mouseout", function() { 
@@ -290,23 +261,13 @@ cirPoint.attr('id', 'cirPoint_'+this.__data__.properties.code)
          .duration(500)
         .style("stroke", "#fff");
 
-      rectTip
-        .style("opacity", 1)
-        .transition()
-        .duration(1000)
-        .style("opacity", 0);
+      // un-Highlight matching LI
+      $('#earthquake_'+code).removeClass('active');
 
-      txtTip
-        .style("opacity", 1)
-        .transition()
-        .duration(1000)
-        .style("opacity", 0);
-
-      });
+    });
 
 
-          // Re-enable button now animation has stopped.
-          btnPlay = d3.select('#btnPlay').attr('disabled', null);
+    btnPlay = d3.select('#btnPlay').attr('disabled', null);
 
 
         }
@@ -314,9 +275,12 @@ cirPoint.attr('id', 'cirPoint_'+this.__data__.properties.code)
 
       })
       .attr('d', path);
+
+      console.log('end transition');
     };
 
   layer.data = function(x) {
+    console.log('start data');
       collection = x,
       bounds = d3.geo.bounds(collection),
       feature = visGrp.selectAll('path')
@@ -347,6 +311,8 @@ cirPoint.attr('id', 'cirPoint_'+this.__data__.properties.code)
         .domain(magExtent)
         .range(visconf.colorExtent);
 
+console.log('end data');
+
       return layer;
     };
 
@@ -369,6 +335,7 @@ cirPoint.attr('id', 'cirPoint_'+this.__data__.properties.code)
   // Load the data
   d3.json('data/usgs_3plus_dsc.json', function(earthquakeData) {
 
+console.log('start loop');
     // Add additional data to the eartquake events
     var earthquakePoints = earthquakeData.features,
         firstDate = new Date(earthquakePoints[0].properties.time),
@@ -379,11 +346,8 @@ cirPoint.attr('id', 'cirPoint_'+this.__data__.properties.code)
       item.properties['day'] = epochDay(datetime) + dayOffset;
       item.properties['month'] = month[datetime.getMonth()];
       item.properties['year'] = datetime.getFullYear();
-
-      //console.log(item.properties['day']+'/'+item.properties['year']);
-
     });
-
+console.log('end loop');
     // Load and draw the map
     mapbox.load(mapconf.mapid, function(mbmap) {
       map = mapbox.map("map", mbmap.layer, null, []);
