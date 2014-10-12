@@ -20,7 +20,7 @@
 
         <div class="introduction">
           <h1 class="heading">Earthquakes in Asia Pacific since 2009</h1>
-          <p class="intro"><strong>This page allows to visualize seismic events in the Asia Pacific since 2009. 
+          <p class="intro"><strong>This page allows to visualize seismic events greater than magnitude 3 in the Asia Pacific since 2009. 
           The radius and the color of the circles are function of the earthquake magnitude.</strong></p>
 
           <form class="inline-form">
@@ -28,15 +28,40 @@
           </form>
         </div>
 
+        <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-          <li class="active"><a href="#">Home</a></li>
-          <li><a href="#">Profile</a></li>
-          <li><a href="#">Messages</a></li>
+          <li class="active"><a href="#list" role="tab" data-toggle="tab">List</a></li>
+          <li><a href="#sources" role="tab" data-toggle="tab">Sources</a></li>
         </ul>
 
-        <div class="panel" id="earthquake_container">
-          <ul class="list-group" id="earthquake_list"></ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div class="tab-pane active" id="list">
+            <div class="panel" id="earthquake_container">
+              <ul class="list-group" id="earthquake_list"></ul>
+            </div>
+          </div>
+          <div class="tab-pane" id="sources">
+
+            <a href="http://earthquake.usgs.gov/earthquakes/search/" target="_blank">USGS Search</a><br/>
+            Query:<br/>
+            Start: 2009-01-01 00:00:00<br/>
+            End: 2014-10-12 23:59:59<br/>
+            Magnitude: min 3<br/>
+            Event type: Earthquakes<br/>
+            Format: GeoJSON<br/>
+            Order by: Time (Oldest first)<br/>
+            Extents:<br/>
+            North: 0.00<br/>
+            South: -45.00<br/>
+            East: 110.00<br/>
+            West: 175.00<br/>
+            <br/>
+            <a href="http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime=2009-10-01%2000:00:00&maxlatitude=0&minlatitude=-45&maxlongitude=175&minlongitude=110&minmagnitude=3&eventtype=earthquake&format=geojson&endtime=2014-10-08%2023:59:59&orderby=time-asc" target="_blank">USGS GeoJSON Data</a>
+          </div>
         </div>
+
+        
   		</div>
 
   		<!-- Map -->
