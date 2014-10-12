@@ -207,7 +207,10 @@ function D3Layer() {
 
     // Clear points layer
     grpPoints.selectAll("*").remove();
-    grpTip.selectAll("*").remove();
+    //grpTip.selectAll("*").remove();
+
+    // un-Highlight matching LI
+    $('.earthquake_item').removeClass('active');
 
     // Offset for resume filter
     startDay = lastMax + 1;
@@ -220,10 +223,8 @@ function D3Layer() {
         firstDay = d.properties.day;
       }
       if ((d.properties.day <= lastMax || lastMax === 0) && d.properties.day >= startDay) {
-        if (d.properties.day >= startDay) {
-          if (d.properties.mag >= 7) lastMax = d.properties.day;
-          return i;
-        }
+        if (d.properties.mag >= 7) lastMax = d.properties.day;
+        return i;
       }
     })
     .transition()
@@ -252,10 +253,15 @@ function D3Layer() {
 
       var mag = this.__data__.properties.mag;
       if (mag >= 7) {
-    
+
+        // Turn radius back on
+        d3.select(this)
+          .attr('fill-opacity', 0.2);
+
+        // Add to list
         var code = this.__data__.properties.code;
         var datetime = new Date(this.__data__.properties.time);
-        var html_item = '<li class="list-group-item earthquake_item" id="earthquake_'+code+'">' + datetime.toLocaleTimeString()+' '+datetime.toLocaleDateString() +
+        var html_item = '<li class="list-group-item earthquake_item active" id="earthquake_'+code+'">' + datetime.toLocaleTimeString()+' '+datetime.toLocaleDateString() +
           '<br/>' + this.__data__.properties.place +
           '<br/>' + 'Magnitude: '+this.__data__.properties.mag;
         if (this.__data__.properties.dmin !== null) {
@@ -271,6 +277,8 @@ function D3Layer() {
         var pointY = segments.getItem(0).y;
 
         // Save data on li for later mouseover.
+        //$('#earthquake_'+code).data('svg', this);
+        //$('#earthquake_'+code).data('mag', mag);
         $('#earthquake_'+code).data('x', pointX);
         $('#earthquake_'+code).data('y', pointY);
         $('#earthquake_'+code).data('fill', document.defaultView.getComputedStyle(this, null).getPropertyValue("fill"));
@@ -405,6 +413,10 @@ d3.json('data/usgs_3plus_dsc.json', function(earthquakeData) {
       .attr('r', visconf.cirPoint.radius);
 
     $(e.currentTarget).addClass('active');
+
+    // Turn radius back on
+    //d3.select($(e.currentTarget).data('svg'))
+    //  .attr('fill-opacity', 0.2); // FIXME
 
   });
 
