@@ -17,20 +17,26 @@
 	<div class="container-fluid">
     <div class="row">
   		<div id="sidebar" class="col-md-4">
-  		  	<div class="introduction">
-  		  		<h1 class="heading">Earthquakes in Asia Pacific since 2009</h1>
-  		  		<p class="intro"><strong>This page allows to visualize seismic events in the Asia Pacific since 2009. 
-  		  		The radius and the color of the circles are function of the earthquake magnitude.</strong></p>
 
-  		  		<form class="inline-form">
-  		  			<button id="btnPlay" class="btn btn-info" type="button">Play</button>
-  		  		</form>
-  		  	</div>
+        <div class="introduction">
+          <h1 class="heading">Earthquakes in Asia Pacific since 2009</h1>
+          <p class="intro"><strong>This page allows to visualize seismic events in the Asia Pacific since 2009. 
+          The radius and the color of the circles are function of the earthquake magnitude.</strong></p>
 
-  			<div class="panel" id="earthquake_container">
-  				<ul class="list-group" id="earthquake_list">
-          </ul>
-  			</div>
+          <form class="inline-form">
+          <button id="btnPlay" class="btn btn-info" type="button">Play</button>
+          </form>
+        </div>
+
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="#">Profile</a></li>
+          <li><a href="#">Messages</a></li>
+        </ul>
+
+        <div class="panel" id="earthquake_container">
+          <ul class="list-group" id="earthquake_list"></ul>
+        </div>
   		</div>
 
   		<!-- Map -->
@@ -266,6 +272,9 @@ function D3Layer() {
           '<br/>' + 'Magnitude: '+this.__data__.properties.mag;
         if (this.__data__.properties.dmin !== null) {
           html_item += '<br/>' + 'Depth: '+Math.round(this.__data__.properties.dmin,2)+'km';
+        }
+        if (this.__data__.properties.link != undefined) {
+          html_item += '<br/><a href="'+this.__data__.properties.link+'" target="_blank">'+this.__data__.properties.link_title+'</a>';
         }
         html_item += '</li>';
 
