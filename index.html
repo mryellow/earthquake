@@ -32,6 +32,7 @@
         <ul class="nav nav-tabs" role="tablist">
           <li class="active"><a href="#list" role="tab" data-toggle="tab">List</a></li>
           <li><a href="#sources" role="tab" data-toggle="tab">Sources</a></li>
+          <li><a href="#license" role="tab" data-toggle="tab">License</a></li>
         </ul>
 
         <!-- Tab panes -->
@@ -59,20 +60,45 @@
             <br/>
             <a href="http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime=2009-10-01%2000:00:00&maxlatitude=0&minlatitude=-45&maxlongitude=175&minlongitude=110&minmagnitude=3&eventtype=earthquake&format=geojson&endtime=2014-10-08%2023:59:59&orderby=time-asc" target="_blank">USGS GeoJSON Data</a>
           </div>
+
+          <div class="tab-pane" id="license">
+<pre>
+The MIT License (MIT)
+
+Copyright (c) [year] [fullname]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</pre>
         </div>
 
-        
-  		</div>
+      </div>
+		</div>
 
-  		<!-- Map -->
-  		<div id="map" class="col-md-8"></div>
-    </div>
+		<!-- Map -->
+		<div id="map" class="col-md-8"></div>
+  </div>
 
-    <div class="row">
-		  <div id="d3l" class="col-md-12"></div>
-    </div>
+  <div class="row">
+	  <div id="d3l" class="col-md-12"></div>
+  </div>
 
-	</div>
+</div>
 
   <script src='http://api.tiles.mapbox.com/mapbox.js/v0.6.6/mapbox.js'></script>
 	<script src="js/d3.v3.min.js"></script>
@@ -433,8 +459,9 @@ d3.json('data/usgs_3plus_dsc.json', function(earthquakeData) {
     //map.zoom(mapconf.zoom);
     //map.ui.zoomer.add();
     map.ui.attribution.add()
-      .content('<a href="http://mapbox.com/about/maps">Mapbox</a>');
+      .content('<a href="http://mapbox.com/about/maps">Mapbox</a><br/><a href="http://earthquake.usgs.gov/earthquakes/search/">USGS</a>');
   });
+  
 
   $('#earthquake_list').on('mouseover','.earthquake_item',function(e) {
     var cirPoint = grpPoints.append('circle');
