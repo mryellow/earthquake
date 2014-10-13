@@ -359,7 +359,7 @@ d3.json('data/usgs_3plus_dsc.json', function(earthquakeData) {
     //map.zoom(mapconf.zoom);
     //map.ui.zoomer.add();
     map.ui.attribution.add()
-      .content('<a href="http://mapbox.com/about/maps">Mapbox</a>');
+      .content('<a href="http://mapbox.com/about/maps">Mapbox</a><br/><a href="http://earthquake.usgs.gov/earthquakes/search/">USGS</a>');
   });
 
   $('#earthquake_list').on('mouseover','.earthquake_item',function(e) {
